@@ -7,7 +7,7 @@
 
 ## License: GPL v3 or higher
 ## Author: Karl Voit
-## http://Karl-Voit.at/2014/04/19/recoding-h107d-videos
+## https://github.com/novoid/recode-h107d-videos
 
 errorexit()
 {
