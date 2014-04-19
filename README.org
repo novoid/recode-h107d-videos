@@ -1,0 +1,41 @@
+I own a [[http://www.banggood.com/Wholesale-Hubsan-H107D-FPV-X4-RC-Quadcopter-RTF-With-5_8G-FPV-6CH-Transmitter-p-68571.html?p%3DHX0712404902201401OF][Hubsan x4 H107d FPV]] quadcopter ([[http://karl-voit.at/2014/04/18/hubsan-x4][my German blog post]]). Its
+video recordings result in 720x240 aspect ratio files. However, they
+are crimped. If you force your video playback tool to use 4:3 aspect
+ratio, the videos are OK again.
+
+In order to convert a H107d video permanently to the correct aspect
+ratio and probably to save some Megabytes as well, you can stick to
+[[https://cali-bros.com/forum/index.php?PHPSESSID%3D099b7314f53d75d491b922aebbc57d53&topic%3D11.0][the usual GUI tools]], mainly for MS Windows.
+
+I wrote a shell script which does the conversion using [[http://www.ffmpeg.org/][ffmpeg]], a
+GNU/Linux command line tool. You can find [[https://github.com/novoid/recode-h107d-videos][my recoding script on
+github]].
+
+---------------
+
+With this, you can use following shell command to convert multiple
+recordings in parallel:
+
+#+BEGIN_EXAMPLE
+recode-h107d-videos.sh *.AVI
+#+END_EXAMPLE
+
+In case you want to add time-stamps to the file names as well (make
+sure that the real time clock in your Hubsan remote control is set
+accordingly), you might as well be interested in [[https://github.com/novoid/date2name][my date2name script]].
+
+With following commands, you add time-stamps to the files before you
+recode them:
+
+#+BEGIN_EXAMPLE
+date2name --withtime *.AVI
+recode-h107d-videos.sh 201*.AVI
+#+END_EXAMPLE
+
+This way, you end up with files like follwing examples:
+
+#+BEGIN_EXAMPLE
+2014-04-18T20.01.48_002 -- h107d recoded.avi
+2014-04-18T19.04.40_004 -- h107d recoded.avi
+2014-04-18T19.05.52_005 -- h107d recoded.avi
+#+END_EXAMPLE
