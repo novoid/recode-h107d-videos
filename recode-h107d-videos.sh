@@ -12,7 +12,7 @@
 while getopts ":v" OPTION; do
         case "$OPTION" in
                 v)      VERBOSE="YES" ;;
-                *)      echo "Usage $0 [file [file ...]]" && exit 1 ;;
+                *)      echo "Usage $0 [-v] [file [file ...]]" && exit 1 ;;
         esac
 done
 
@@ -45,6 +45,17 @@ for myfile in "$@"; do
     mv "${myfile}" "${originalFile}"
 
     echo "${myfile}  --- convert --->  ${resultFile}"
-    recode_video_file "${originalFile}" "${resultFile}" "${loglevel}" &&
-    rm "${originalFile}"
+    (recode_video_file "${originalFile}" "${resultFile}" "${loglevel}" &&
+    rm "${originalFile}")&
 done
+
+printf "Please wait"
+
+for job in $(jobs -p)
+do
+    while (pgrep -qP "$job")
+    do
+        printf "." && sleep 1
+    done
+done
+printf "\nDONE\n"
