@@ -39,12 +39,11 @@ for myfile in "$@"; do
     fi
 
     originalFile="${myfile/\.*/.${myfile##*.}.original}"
-    resultFile="${myfile/\.*/.${myfile##*.}.converted}"
 
     echo "${myfile}  --- mv -------->  ${originalFile}"
     mv "${myfile}" "${originalFile}"
 
-    echo "${myfile}  --- convert --->  ${resultFile}"
+    echo "${myfile}  --- convert --->  ${myfile}"
     (recode_video_file "${originalFile}" "${resultFile}" "${loglevel}" &&
     rm "${originalFile}")&
 done
