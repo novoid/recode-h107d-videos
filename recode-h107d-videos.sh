@@ -16,8 +16,6 @@ errorexit()
         echo
         echo "$FILENAME aborted with errorcode $1:  $2"
         echo
-        #echo "See \"${LOGFILE}\" for further details."
-        #echo
     fi  
 
     exit $1
@@ -55,5 +53,3 @@ for myfile in "$@"; do
     rm "${newinputfilename}"
     
 done
-
-#end
