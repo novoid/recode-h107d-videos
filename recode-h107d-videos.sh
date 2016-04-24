@@ -25,7 +25,7 @@ errorexit()
 
 recode_video_file()
 {
-    /usr/bin/ffmpeg -i "${1}" -f avi -r 29.97 -vcodec libxvid \
+    ffmpeg -i "${1}" -f avi -r 29.97 -vcodec libxvid \
 		    -vtag XVID -vf scale=720:480 \
 		    -aspect 4:3 -maxrate 1800k -b 1500k \
 		    -qmin 3 -qmax 5 -bufsize 4096 \
