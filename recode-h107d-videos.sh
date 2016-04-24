@@ -43,8 +43,8 @@ for myfile in "$@"; do
     echo "${myfile}  --- mv -------->  ${originalFile}"
     mv "${myfile}" "${originalFile}"
 
-    echo "${myfile}  --- convert --->  ${myfile}"
-    (recode_video_file "${originalFile}" "${resultFile}" "${loglevel}" &&
+    echo "${originalFile}  --- convert --->  ${myfile}"
+    (recode_video_file "${originalFile}" "${myfile}" "${loglevel}" &&
     rm "${originalFile}")&
 done
 
