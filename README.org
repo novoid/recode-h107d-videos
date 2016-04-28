@@ -18,6 +18,8 @@ recordings in parallel:
 
 #+BEGIN_EXAMPLE
 recode-h107d-videos.sh *.AVI
+recode-h107d-videos.sh /tmp/*.AVI
+recode-h107d-videos.sh -v /tmp/*.AVI
 #+END_EXAMPLE
 
 In case you want to add time-stamps to the file names as well (make
@@ -35,7 +37,7 @@ recode-h107d-videos.sh 201*.AVI
 This way, you end up with files like follwing examples:
 
 #+BEGIN_EXAMPLE
-2014-04-18T20.01.48_002 -- h107d recoded.avi
-2014-04-18T19.04.40_004 -- h107d recoded.avi
-2014-04-18T19.05.52_005 -- h107d recoded.avi
+2014-04-18T20.01.48_002.AVI.converted
+2014-04-18T19.04.40_004.AVI.converted
+2014-04-18T19.05.52_005.AVI.converted
 #+END_EXAMPLE
