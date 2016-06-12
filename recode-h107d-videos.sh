@@ -9,51 +9,52 @@
 ## Author: Karl Voit
 ## https://github.com/novoid/recode-h107d-videos
 
-errorexit()
-{
-    [ "$1" -lt 1 ] && echo "$FILENAME done."
-    if [ "$1" -gt 0 ]; then
-        echo
-        echo "$FILENAME aborted with errorcode $1:  $2"
-        echo
-        #echo "See \"${LOGFILE}\" for further details."
-        #echo
-    fi  
-
-    exit $1
-}
+while getopts ":v" OPTION; do
+        case "$OPTION" in
+                v)      VERBOSE="YES" ;;
+                *)      echo "Usage $0 [-v] [file [file ...]]" && exit 1 ;;
+        esac
+done
 
 recode_video_file()
 {
-    /usr/bin/ffmpeg -i "${1}" -f avi -r 29.97 -vcodec libxvid \
-		    -vtag XVID -vf scale=720:480 \
+    ffmpeg -i "${1}" -f avi -r 29.97 -vcodec libxvid \
+		    -vtag XVID -vf scale=720:480 ${3}\
 		    -aspect 4:3 -maxrate 1800k -b 1500k \
 		    -qmin 3 -qmax 5 -bufsize 4096 \
 		    -mbd 2 -bf 2 -trellis 1 -flags +aic \
-		    -cmp 2 -subcmp 2 -g 300 "${2}" || \
-    errorexit 20 "recoding of \"${1}\" to \"${1}\" went wrong. Aborted."
+		    -cmp 2 -subcmp 2 -g 300 "${2}"
+    if [ $? -ne 0 ]; then
+        echo "Converting of \"${1}\" to \"${2}\" went wrong. Aborted."
+        exit 20
+    fi
 }
 
+[ -z "$VERBOSE" ] && loglevel='-loglevel quiet' || loglevel=''
+
 for myfile in "$@"; do
-    
-    filebasename=`basename "${myfile}"`
+    if ! [ -f "${myfile}" ]; then
+        echo "File ${myfile} is not found"
+        continue
+    fi
 
-    test "${filebasename}" = "${myfile}" || \
-    errorexit 1 "this script only supports file names without folders"
+    originalFile="${myfile/\.*/.${myfile##*.}.original}"
 
-    [ -f "${filebasename}" ] || \
-    errorexit 2 "file \"${filebasename}\" not an existing file."
+    echo "${myfile}  --- mv -------->  ${originalFile}"
+    mv "${myfile}" "${originalFile}"
 
-    newinputfilename=`echo "${filebasename}" | sed 's/\(\....\)$/ -- h107d original\1/'`
-    resultfilename=`echo "${filebasename}" | sed 's/\(\....\)$/ -- h107d recoded\1/'`
-
-    echo "${filebasename}  --- mv -------->  ${newinputfilename}"
-    mv "${filebasename}" "${newinputfilename}"
-    echo "${filebasename}  --- convert --->  ${resultfilename}"
-    
-    recode_video_file "${newinputfilename}" "${resultfilename}"
-    rm "${newinputfilename}"
-    
+    echo "${originalFile}  --- convert --->  ${myfile}"
+    (recode_video_file "${originalFile}" "${myfile}" "${loglevel}" &&
+    rm "${originalFile}")&
 done
 
-#end
+printf "Please wait"
+
+for job in $(jobs -p)
+do
+    while (pgrep -qP "$job")
+    do
+        printf "." && sleep 1
+    done
+done
+printf "\nDONE\n"
