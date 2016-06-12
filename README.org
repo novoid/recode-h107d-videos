@@ -7,9 +7,9 @@ In order to convert a H107d video permanently to the correct aspect
 ratio and probably to save some Megabytes as well, you can stick to
 [[https://cali-bros.com/forum/index.php?PHPSESSID%3D099b7314f53d75d491b922aebbc57d53&topic%3D11.0][the usual GUI tools]], mainly for MS Windows.
 
-I wrote a shell script which does the conversion using [[http://www.ffmpeg.org/][ffmpeg]], a
-GNU/Linux command line tool. You can find [[https://github.com/novoid/recode-h107d-videos][my recoding script on
-github]].
+I wrote a shell script for the [[https://en.wikipedia.org/wiki/Z_shell][zsh]] which does the conversion using
+[[http://www.ffmpeg.org/][ffmpeg]], a GNU/Linux command line tool. You can find [[https://github.com/novoid/recode-h107d-videos][my recoding script
+on github]].
 
 ---------------
 
@@ -39,3 +39,9 @@ This way, you end up with files like follwing examples:
 2014-04-18T19.04.40_004 -- h107d recoded.avi
 2014-04-18T19.05.52_005 -- h107d recoded.avi
 #+END_EXAMPLE
+
+
+--------------
+
+If you get [[https://github.com/novoid/recode-h107d-videos/issues/2]["Bad Substitution" errors]], you might have a different shell
+than zsh.
